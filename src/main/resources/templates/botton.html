@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Program</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], select {
+            width: 200px;
+            margin-bottom: 10px;
+        }
+        #reporter {
+            width: 160px;
+            display: inline-block;
+        }
+        #clearReporter {
+            vertical-align: top;
+        }
+        #search, #clear {
+            margin-top: 10px;
+        }
+        #searchResults {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Search Program</h2>
+    <form id="searchForm">
+        <label for="ownerGroup">所有者组别:</label>
+        <select id="ownerGroup">
+            <option value=""></option>
+            <option value="Group1">Group 1</option>
+            <option value="Group2">Group 2</option>
+            <option value="Group3">Group 3</option>
+        </select>
+
+        <label for="addressBookName">通讯录名:</label>
+        <input type="text" id="addressBookName">
+
+        <label for="reporter">登记者:</label>
+        <input type="text" id="reporter" >
+        <button type="button" id="selectUser">用户选择</button>
+        <button type="button" id="clearReporter">Clear</button>
+
+        <label><input type="checkbox" id="checkBox"> 更新者</label>
+
+        <button type="button" id="search">检索</button>
+        <button type="button" id="clear">清除</button>
+    </form>
+
+    <!-- Container for displaying search results -->
+    <div id="searchResults">
+        <table id="searchResultsTable" border="1">
+            <tr>
+                <th>一览</th>
+                <th>编辑</th>
+                <th>显示项目</th>
+                <th>导出</th>
+                <th>通讯录名</th>
+                <th>所有者组别名</th>
+                <th>更新日时</th>
+                <th>删除</th>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').click(function() {
+            var ownerGroup = $('#ownerGroup').val();
+            var addressBookName = $('#addressBookName').val();
+            var reporter = $('#reporter').val();
+            var checkBox = $('#checkBox').prop('checked');
+
+            // 准备发送的数据
+            var searchData = {
+                ownerGroup: ownerGroup,
+                addressBookName: addressBookName,
+                reporter: reporter                
+            };
+
+            // 发送 AJAX 请求
+            $.ajax({
+                type: 'POST',
+                url: 'search', // 替换为实际的后端端点
+                contentType: 'application/json',
+                data: JSON.stringify(searchData),
+                success: function(responseData) {
+                    // 请求成功时更新表格
+                    updateTable(responseData.data);
+                    console.log(responseData);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX 请求失败:', error);
+                }
+            });
+        });
+
+        // 更新表格的函数
+function updateTable(data) {
+    var tbodyHtml = ''; // 存储表格行的 HTML
+
+    // 遍历收到的数据，构建表格行的 HTML
+    $.each(data, function(index, item) {
+        // 构建表格行的 HTML 字符串
+        var newRow = '<tr>';
+        newRow += '<td>'+ item.id + '</td>'; // 一览
+        newRow += '<td><button>编辑</button></td>'; // 编辑按钮
+        newRow += '<td></td>'; // 显示项目
+        newRow += '<td><button>导出</button></td>'; // 导出按钮
+        newRow += '<td>' + item.addressBookName + '</td>'; // 通讯录名
+        newRow += '<td>' + item.ownerGroup + '</td>'; // 所有者组别名
+        newRow += '<td>' + item.createDate + '</td>'; // 更新日期
+        newRow += '<td><button>删除</button></td>'; // 删除按钮
+        newRow += '</tr>';
+
+        // 添加构建好的表格行 HTML 到 tbodyHtml
+        tbodyHtml += newRow;
+    });
+
+    // 将构建好的所有表格行的 HTML 一次性添加到表格中
+    $('#searchResultsTable tbody').html(tbodyHtml);
+}
+
+
+        // 清除按钮的点击事件处理
+        $('#clear').click(function() {
+            // 清除表单字段
+            $('#ownerGroup').prop('selectedIndex', 0);
+            $('#addressBookName').val('');
+            $('#reporter').val('');
+            $('#checkBox').prop('checked', false);
+
+            // 清空表格
+            $('#searchResultsTable tbody').empty();
+        });
+    });
+</script>
+</body>
+</html>
