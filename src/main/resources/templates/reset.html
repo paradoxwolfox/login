@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2><span th:if="${session.user != null}" th:text="${session.user.username}"></span>Reset Password</h2>
+    <div th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></div>
+    <form id="reset-password-form" th:action="@{/reset-password}" method="post">
+        <table border="0" class="form_table">
+            <tr th:if="${session.user == null}">
+                <td valign="middle" align="right">Username:</td>
+                <td valign="middle" align="left">
+                    <input type="text" class="inputgri" id="username" name="username">
+                </td>
+            </tr>
+            <tr>
+                <td valign="middle" align="right">New Password:</td>
+                <td valign="middle" align="left">
+                    <input type="password" class="inputgri" id="new-password" name="newPassword">
+                </td>
+            </tr>
+            <tr>
+                <td valign="middle" align="right">Confirm Password:</td>
+                <td valign="middle" align="left">
+                    <input type="password" class="inputgri" id="confirm-password" name="confirmPassword">
+                </td>
+            </tr>
+        </table>
+        <p>
+            <button type="button" id="reset-btn">Reset Password</button> <!-- Change type to "button" -->
+        </p>
+    </form>
+
+<script th:inline="javascript">
+$(document).ready(function() {
+    // 监听Reset Password按钮点击事件
+    $('#reset-btn').click(function() {
+        // 获取用户名
+        var username;
+        /*<![CDATA[*/
+        var sessionUser = /*[[${session.user}]]*/ null;
+        /*]]>*/
+        console.log(sessionUser);
+        if (sessionUser != null) {
+            username = sessionUser.username;
+        } else {
+            username = $('#username').val();
+        }
+
+        // 获取新密码和确认密码
+        var newPassword = $('#new-password').val();
+        var confirmPassword = $('#confirm-password').val();
+
+        // 构建要发送的数据
+     // 构建要发送的数据，将其转换为JSON格式
+        var formData = {
+            username: username,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        };
+
+        // 发送Ajax请求
+        $.ajax({
+            type: 'POST',
+            url: '/reset-password',
+            contentType: 'application/json',  // 设置请求的内容类型为JSON
+            data: JSON.stringify(formData),   // 将数据转换为JSON字符串
+            success: function(response) {
+                // 处理成功响应
+                $('body').html(response);
+                console.log(response);
+                // 可以在这里更新页面或执行其他操作
+            },
+            error: function(xhr, status, error) {
+                // 处理错误响应
+                console.error('Error resetting password:', error);
+                // 可以在这里显示错误消息或执行其他错误处理逻辑
+            }
+        });
+    });
+});
+
+</script>
+
+
+
+
+
+</body>
+</html>
+

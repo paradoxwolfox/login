@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.LoginMapper">
+    <select id="login" resultType="com.example.demo.vo.User" parameterType="string">
+        select * from MY."Login" a
+        <where>
+            <if test="username != null and username != ''">
+                and a."username" = #{username, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <update id="update" parameterType="com.example.demo.bean.Changepws">
+    	update MY."Login"
+    	set "password" = #{newPassword, jdbcType=VARCHAR}
+    	where "username" = #{username, jdbcType=VARCHAR}
+	</update>
+
+</mapper>
