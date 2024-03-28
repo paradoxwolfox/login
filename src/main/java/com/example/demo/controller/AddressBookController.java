@@ -17,6 +17,14 @@ import com.example.demo.service.AddressBookService;
 import com.example.demo.vo.AddressBook;
 import com.example.demo.vo.result;
 
+
+
+
+/**
+*AddressBookController
+*
+*2024.03.28
+*/
 @Controller
 @CrossOrigin
 public class AddressBookController{
@@ -36,11 +44,11 @@ public class AddressBookController{
 //        return list;
 //    }
 	
+	//search機能
 	@PostMapping("/search")
 	@ResponseBody
 	public result searchAddressBooks(@RequestBody SearchRequest searchRequest){
 	    List<AddressBook> list = addressBookService.searchAddressBooks(searchRequest);
-	    System.out.println(list);
 	    return result.ok(list);
 	}
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Program</title>
+    <title>検索プログラム</title>
     <style>
         label {
             display: block;
@@ -29,42 +29,42 @@
     </style>
 </head>
 <body>
-    <h2>Search Program</h2>
+    <h2>検索プログラム</h2>
     <form id="searchForm">
-        <label for="ownerGroup">所有者组别:</label>
+        <label for="ownerGroup">所有者グループ:</label>
         <select id="ownerGroup">
             <option value=""></option>
-            <option value="Group1">Group 1</option>
-            <option value="Group2">Group 2</option>
-            <option value="Group3">Group 3</option>
+            <option value="Group1">Group1</option>
+            <option value="Group2">Group2</option>
+            <option value="Group3">Group3</option>
         </select>
 
-        <label for="addressBookName">通讯录名:</label>
+        <label for="addressBookName">アドレス帳名:</label>
         <input type="text" id="addressBookName">
 
-        <label for="reporter">登记者:</label>
+        <label for="reporter">登録者:</label>
         <input type="text" id="reporter" >
-        <button type="button" id="selectUser">用户选择</button>
-        <button type="button" id="clearReporter">Clear</button>
+        <button type="button" id="selectUser">ユーザー選択</button>
+        <button type="button" id="clearReporter">クリア</button>
 
         <label><input type="checkbox" id="checkBox"> 更新者</label>
 
-        <button type="button" id="search">检索</button>
-        <button type="button" id="clear">清除</button>
+        <button type="button" id="search">検索</button>
+        <button type="button" id="clear">クリア</button>
     </form>
 
-    <!-- Container for displaying search results -->
+    <!-- 検索結果を表示するコンテナ -->
     <div id="searchResults">
         <table id="searchResultsTable" border="1">
             <tr>
-                <th>一览</th>
-                <th>编辑</th>
-                <th>显示项目</th>
-                <th>导出</th>
-                <th>通讯录名</th>
-                <th>所有者组别名</th>
-                <th>更新日时</th>
-                <th>删除</th>
+                <th>一覧</th>
+                <th>編集</th>
+                <th>表示項目</th>
+                <th>エクスポート</th>
+                <th>アドレス帳名</th>
+                <th>所有者グループ名</th>
+                <th>更新日時</th>
+                <th>削除</th>
             </tr>
         </table>
     </div>
@@ -78,66 +78,66 @@
             var reporter = $('#reporter').val();
             var checkBox = $('#checkBox').prop('checked');
 
-            // 准备发送的数据
+            // 送信するデータを準備
             var searchData = {
                 ownerGroup: ownerGroup,
                 addressBookName: addressBookName,
                 reporter: reporter                
             };
 
-            // 发送 AJAX 请求
+            // AJAXリクエストを送信
             $.ajax({
                 type: 'POST',
-                url: 'search', // 替换为实际的后端端点
+                url: 'search', // 実際のバックエンドエンドポイントに置き換える
                 contentType: 'application/json',
                 data: JSON.stringify(searchData),
                 success: function(responseData) {
-                    // 请求成功时更新表格
+                    // テーブルを更新する
                     updateTable(responseData.data);
                     console.log(responseData);
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX 请求失败:', error);
+                    console.error('AJAXリクエストが失敗しました:', error);
                 }
             });
         });
 
-        // 更新表格的函数
-function updateTable(data) {
-    var tbodyHtml = ''; // 存储表格行的 HTML
+        // テーブルを更新する関数
+        function updateTable(data) {
+            var tbodyHtml = ''; // 表の行のHTMLを格納
 
-    // 遍历收到的数据，构建表格行的 HTML
-    $.each(data, function(index, item) {
-        // 构建表格行的 HTML 字符串
-        var newRow = '<tr>';
-        newRow += '<td>'+ item.id + '</td>'; // 一览
-        newRow += '<td><button>编辑</button></td>'; // 编辑按钮
-        newRow += '<td></td>'; // 显示项目
-        newRow += '<td><button>导出</button></td>'; // 导出按钮
-        newRow += '<td>' + item.addressBookName + '</td>'; // 通讯录名
-        newRow += '<td>' + item.ownerGroup + '</td>'; // 所有者组别名
-        newRow += '<td>' + item.createDate + '</td>'; // 更新日期
-        newRow += '<td><button>删除</button></td>'; // 删除按钮
-        newRow += '</tr>';
+            // 受信したデータを反復処理し、表の行のHTMLを構築する
+            $.each(data, function(index, item) {
+                // 表の行のHTML文字列を構築
+                var newRow = '<tr>';
+                newRow += '<td>'+ item.id + '</td>'; // 一覧
+                newRow += '<td><button>編集</button></td>'; // 編集ボタン
+                newRow += '<td></td>'; // 表示項目
+                newRow += '<td><button>エクスポート</button></td>'; // エクスポートボタン
+                newRow += '<td>' + item.addressBookName + '</td>'; // アドレス帳名
+                newRow += '<td>' + item.ownerGroup + '</td>'; // 所有者グループ名
+                newRow += '<td>' + item.createDate + '</td>'; // 更新日付
+                newRow += '<td><button>削除</button></td>'; // 削除ボタン
+                newRow += '</tr>';
 
-        // 添加构建好的表格行 HTML 到 tbodyHtml
-        tbodyHtml += newRow;
-    });
+                // 構築した表の行HTMLをtbodyHtmlに追加
+                tbodyHtml += newRow;
+            });
 
-    // 将构建好的所有表格行的 HTML 一次性添加到表格中
-    $('#searchResultsTable tbody').html(tbodyHtml);
-}
+            // 構築したすべての表の行HTMLを一度に表に追加
+            $('#searchResultsTable tbody').html(tbodyHtml);
+        }
 
 
-        // 清除按钮的点击事件处理
+        // クリアボタンのクリックイベント処理
         $('#clear').click(function() {
-            // 清除表单字段
+            // フォームフィールドをクリアする
             $('#ownerGroup').prop('selectedIndex', 0);
             $('#addressBookName').val('');
             $('#reporter').val('');
             $('#checkBox').prop('checked', false);
 
-            // 清空表格
+            // 表をクリア
             $('#searchResultsTable tbody').empty();
         });
     });

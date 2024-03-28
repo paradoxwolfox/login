@@ -2,6 +2,13 @@ package com.example.demo.vo;
 
 import lombok.Data;
 
+
+
+/**
+*result
+*
+*2024.03.28
+*/
 @Data
 public class result {
     private int code;

@@ -4,6 +4,13 @@ import java.sql.Date;
 
 import lombok.Data;
 
+
+
+/**
+*AddressBook
+*
+*2024.03.28
+*/
 @Data
 public class AddressBook {
     private Integer id;
