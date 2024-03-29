@@ -8,7 +8,11 @@ import com.example.demo.vo.User;
 
 
 
-
+/**
+*LoginMapper
+*
+*2024.03.28
+*/
 @Mapper
 public interface LoginMapper {
 	User login(String name);

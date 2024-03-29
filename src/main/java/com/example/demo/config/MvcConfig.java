@@ -5,6 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+/**
+*MvcConfig
+*
+*2024.03.29
+*/
 @Configuration
 public class MvcConfig implements WebMvcConfigurer{
 	

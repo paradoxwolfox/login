@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-
-
 import java.sql.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -14,8 +12,11 @@ import com.example.demo.bean.UserImfor;
 import com.example.demo.dao.LoginMapper;
 import com.example.demo.vo.User;
 
-
-
+/**
+ * LoginServiceImpl
+ *
+ * 2024.03.28
+ */
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -25,32 +26,31 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public User searchUsers(String username, String password) {
         if (username == null || password == null || username == "" || password == "") {
-            throw new RuntimeException("用户名和密码不能为空");
+            throw new RuntimeException("ユーザー名とパスワードを入力してください");
         }
 
         User user = loginMapper.login(username);
         System.out.println(DigestUtils.md5Hex(password));
         if (user == null) {
-            throw new RuntimeException("用户名有误");
+            throw new RuntimeException("ユーザー名が間違っています");
         }
 
         if (!user.getPassword().equals(DigestUtils.md5Hex(password))) {
-            throw new RuntimeException("密码有误");
+            throw new RuntimeException("パスワードが間違っています");
         }
 
         return user;
     }
 
-	@Override
-	public void update(Changepws changepws) {
-		if (changepws.getNewPassword().equals(changepws.getConfirmPassword()) ) {
-			String psw = DigestUtils.md5Hex(changepws.getNewPassword());
-			changepws.setNewPassword(psw);
-			loginMapper.update(changepws);
-		}else {
-			throw new RuntimeException("两次输入的密码不一样");
-		}
-		
-	}
-}
+    @Override
+    public void update(Changepws changepws) {
+        if (changepws.getNewPassword().equals(changepws.getConfirmPassword())) {
+            String psw = DigestUtils.md5Hex(changepws.getNewPassword());
+            changepws.setNewPassword(psw);
+            loginMapper.update(changepws);
+        } else {
+            throw new RuntimeException("パスワードが一致しません");
+        }
 
+    }
+}

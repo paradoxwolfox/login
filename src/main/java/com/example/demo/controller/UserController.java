@@ -56,10 +56,11 @@ public class UserController{
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
             System.out.println(e.getMessage());
-            return "login"; // 重定向到显示错误消息的页面
+            return "login"; 
         }
     }
-
+	
+	//reset password
 	@PostMapping("reset-password")
     public String resetPassword(Changepws changepws,Model model,HttpSession session) {
 		
