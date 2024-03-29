@@ -1,0 +1,22 @@
+/* static/styles.css */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+input[type="text"], select {
+    width: 200px;
+    margin-bottom: 10px;
+}
+#reporter {
+    width: 160px;
+    display: inline-block;
+}
+#clearReporter {
+    vertical-align: top;
+}
+#search, #clear {
+    margin-top: 10px;
+}
+#searchResults {
+    margin-top: 20px;
+}

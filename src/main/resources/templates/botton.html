@@ -1,38 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索プログラム</title>
-    <style>
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 200px;
-            margin-bottom: 10px;
-        }
-        #reporter {
-            width: 160px;
-            display: inline-block;
-        }
-        #clearReporter {
-            vertical-align: top;
-        }
-        #search, #clear {
-            margin-top: 10px;
-        }
-        #searchResults {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/styles.css}">
 </head>
 <body>
     <h2>検索プログラム</h2>
-    <form id="searchForm">
+    <form id="searchForm" th:action="@{search}" method="post">
         <label for="ownerGroup">所有者グループ:</label>
-        <select id="ownerGroup">
+        <select id="ownerGroup" name="ownerGroup">
             <option value=""></option>
             <option value="Group1">Group1</option>
             <option value="Group2">Group2</option>
@@ -40,22 +18,24 @@
         </select>
 
         <label for="addressBookName">アドレス帳名:</label>
-        <input type="text" id="addressBookName">
+        <input type="text" id="addressBookName" name="addressBookName">
 
         <label for="reporter">登録者:</label>
-        <input type="text" id="reporter" >
+        <input type="text" id="reporter" name="reporter">
         <button type="button" id="selectUser">ユーザー選択</button>
         <button type="button" id="clearReporter">クリア</button>
 
         <label><input type="checkbox" id="checkBox"> 更新者</label>
 
-        <button type="button" id="search">検索</button>
-        <button type="button" id="clear">クリア</button>
+        <button type="submit" id="search">検索</button>
+        <button type="button" id="clear" onclick="clearFields()">クリア</button>
     </form>
 
     <!-- 検索結果を表示するコンテナ -->
     <div id="searchResults">
         <table id="searchResultsTable" border="1">
+        <thead>
+            <!-- 表のヘッダー -->
             <tr>
                 <th>一覧</th>
                 <th>編集</th>
@@ -66,81 +46,35 @@
                 <th>更新日時</th>
                 <th>削除</th>
             </tr>
+        </thead>
+        <tbody>
+            <!-- 表のデータ -->
+            <tr th:each="item,state:${list}">
+                <th><span th:text="${item.id}"></span></th>
+                <th><button>編集</button></th>
+                <th><span th:text="${item.project}"></span></th>
+                <th><button>エクスポート</button></th>
+                <th><span th:text="${item.addressBookName}"></span></th>
+                <th><span th:text="${item.ownerGroup}"></span></th>
+                <th><span th:text="${item.createDate}"></span></th>
+                <th><button>削除</button></th>
+            </tr>
+         </tbody>
         </table>
     </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    function clearFields(){
+        // 全てのフォームフィールドをクリアする
+        $('#ownerGroup').prop('selectedIndex', 0);
+        $('#addressBookName').val('');
+        $('#reporter').val('');
+        $('#checkBox').prop('checked', false);
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#search').click(function() {
-            var ownerGroup = $('#ownerGroup').val();
-            var addressBookName = $('#addressBookName').val();
-            var reporter = $('#reporter').val();
-            var checkBox = $('#checkBox').prop('checked');
-
-            // 送信するデータを準備
-            var searchData = {
-                ownerGroup: ownerGroup,
-                addressBookName: addressBookName,
-                reporter: reporter                
-            };
-
-            // AJAXリクエストを送信
-            $.ajax({
-                type: 'POST',
-                url: 'search', // 実際のバックエンドエンドポイントに置き換える
-                contentType: 'application/json',
-                data: JSON.stringify(searchData),
-                success: function(responseData) {
-                    // テーブルを更新する
-                    updateTable(responseData.data);
-                    console.log(responseData);
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAXリクエストが失敗しました:', error);
-                }
-            });
-        });
-
-        // テーブルを更新する関数
-        function updateTable(data) {
-            var tbodyHtml = ''; // 表の行のHTMLを格納
-
-            // 受信したデータを反復処理し、表の行のHTMLを構築する
-            $.each(data, function(index, item) {
-                // 表の行のHTML文字列を構築
-                var newRow = '<tr>';
-                newRow += '<td>'+ item.id + '</td>'; // 一覧
-                newRow += '<td><button>編集</button></td>'; // 編集ボタン
-                newRow += '<td></td>'; // 表示項目
-                newRow += '<td><button>エクスポート</button></td>'; // エクスポートボタン
-                newRow += '<td>' + item.addressBookName + '</td>'; // アドレス帳名
-                newRow += '<td>' + item.ownerGroup + '</td>'; // 所有者グループ名
-                newRow += '<td>' + item.createDate + '</td>'; // 更新日付
-                newRow += '<td><button>削除</button></td>'; // 削除ボタン
-                newRow += '</tr>';
-
-                // 構築した表の行HTMLをtbodyHtmlに追加
-                tbodyHtml += newRow;
-            });
-
-            // 構築したすべての表の行HTMLを一度に表に追加
-            $('#searchResultsTable tbody').html(tbodyHtml);
-        }
-
-
-        // クリアボタンのクリックイベント処理
-        $('#clear').click(function() {
-            // フォームフィールドをクリアする
-            $('#ownerGroup').prop('selectedIndex', 0);
-            $('#addressBookName').val('');
-            $('#reporter').val('');
-            $('#checkBox').prop('checked', false);
-
-            // 表をクリア
-            $('#searchResultsTable tbody').empty();
-        });
-    });
-</script>
+        // 検索結果テーブルの内容をクリアする
+        $('#searchResultsTable tbody').empty();
+    }
+    </script>
 </body>
 </html>

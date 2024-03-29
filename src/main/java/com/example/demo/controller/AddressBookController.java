@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +29,7 @@ import com.example.demo.vo.result;
 @Controller
 @CrossOrigin
 public class AddressBookController{
-	@RequestMapping("/botton")
-    public String botton()
-    {
-        return "botton";
-    }
+
 	
 	@Autowired
 	private AddressBookService addressBookService;
@@ -46,11 +43,15 @@ public class AddressBookController{
 	
 	//search機能
 	@PostMapping("/search")
-	@ResponseBody
-	public result searchAddressBooks(@RequestBody SearchRequest searchRequest){
+	public String searchAddressBooks(SearchRequest searchRequest,Model model){
+		System.out.println(searchRequest);
 	    List<AddressBook> list = addressBookService.searchAddressBooks(searchRequest);
-	    return result.ok(list);
+	    System.out.println(list);
+	    model.addAttribute("list",list);
+	    return "botton";
 	}
+	
+	
 
 }
 

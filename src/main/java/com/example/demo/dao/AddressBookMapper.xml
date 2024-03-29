@@ -8,8 +8,8 @@ SELECT a."id" as id,
        a."ownerGroup" as ownerGroup,
        a."createDate" as createDate 
        FROM MY."Test" a 
-       WHERE (a."ownerGroup" = #{ownerGroup} OR #{ownerGroup} = '' OR #{ownerGroup} IS NULL)
-       AND (a."addressBookName" = #{addressBookName} OR #{addressBookName} = '' OR #{addressBookName} IS NULL)
-       AND (a."reporter" = #{reporter} OR #{reporter} = '' OR #{reporter} IS NULL)
+       WHERE (a."ownerGroup" = #{ownerGroup, jdbcType=VARCHAR} OR #{ownerGroup, jdbcType=VARCHAR} = '' OR #{ownerGroup, jdbcType=VARCHAR} IS NULL)
+       AND (a."addressBookName" = #{addressBookName, jdbcType=VARCHAR} OR #{addressBookName, jdbcType=VARCHAR} = '' OR #{addressBookName, jdbcType=VARCHAR} IS NULL)
+       AND (a."reporter" = #{reporter, jdbcType=VARCHAR} OR #{reporter, jdbcType=VARCHAR} = '' OR #{reporter, jdbcType=VARCHAR} IS NULL)
     </select>
 </mapper>
