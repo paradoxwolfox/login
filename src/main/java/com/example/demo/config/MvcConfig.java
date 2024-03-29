@@ -17,10 +17,10 @@ public class MvcConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		// TODO Auto-generated method stub
-		registry.addViewController("login").setViewName("login");
-		registry.addViewController("reset").setViewName("reset");
-		registry.addViewController("botton").setViewName("botton");
+		
+		registry.addViewController("login").setViewName("login");//loginのリダイレクト
+		registry.addViewController("reset").setViewName("reset");//resetのリダイレクト
+		registry.addViewController("botton").setViewName("botton");//bottonのリダイレクト
 	}
 	
 }

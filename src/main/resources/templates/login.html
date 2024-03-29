@@ -8,32 +8,36 @@
 </head>
 <body>
     <h2>Login</h2>
+    <!-- エラーメッセージを表示するディビジョン -->
     <div th:text="${errorMessage}" style="color: red;"></div>
     <form id="login-form" th:action="@{search1}" method="post">
         <table border="0" class="form_table">
             <tr>
-                <td valign="middle" align="right">Username:</td>
+                <!-- ユーザー名の入力 -->
+                <td valign="middle" align="right">ユーザー名:</td>
                 <td valign="middle" align="left">
                     <input type="text" class="inputgri" name="username">
                 </td>
             </tr>
             <tr>
-                <td valign="middle" align="right">Password:</td>
+                <!-- パスワードの入力 -->
+                <td valign="middle" align="right">パスワード:</td>
                 <td valign="middle" align="left">
                     <input type="password" class="inputgri" name="password">
                 </td>
             </tr>       
         </table>
+        <!-- ログインボタンとリセットボタン -->
         <p>
-            <button type="submit" id="login-btn">Login</button>
-            <button type="button" id="reset-btn" onclick="goreset()">Goto Reset</button>
+            <button type="submit" id="login-btn">ログイン</button>
+            <button type="button" id="reset-btn" onclick="goreset()">リセットへ</button>
         </p>
     </form>
 </body>
 <script>
+    // リセットボタンがクリックされた場合の処理
 	function goreset(){
 		location.href = '[[@{/reset}]]'
 	}
-
 </script>
 </html>

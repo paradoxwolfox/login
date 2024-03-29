@@ -24,60 +24,50 @@ import com.example.demo.vo.result;
 import jakarta.servlet.http.HttpSession;
 
 /**
-*LoginController
-*
-*2024.03.28
-*/
+ * UserController
+ *
+ * 2024.03.28
+ */
 @Controller
 @CrossOrigin
-public class UserController{
+public class UserController {
 
-	
-	@Autowired
-	private LoginService loginService;
-    
+    @Autowired
+    private LoginService loginService;
 
-	//search機能
-	@RequestMapping("search1")
-	public String login(String username,String password,HttpSession session,Model model){
-		System.out.println(username+password);
-		try {
-			
-            User user = loginService.searchUsers(username, password);
-            LocalDate currentDate = LocalDate.now();
+    // 検索機能
+    @RequestMapping("search1")
+    public String login(String username, String password, HttpSession session, Model model) {
+        try {
+
+            User user = loginService.searchUsers(username, password);// アカウントとパスワードをサービス層に渡し、userを返す
+            LocalDate currentDate = LocalDate.now();// 現在のシステム時刻を取得
             if (user.getEndtime().toLocalDate().compareTo(currentDate) < 0) {
-            	session.setAttribute("user", user);
-				return "redirect:/reset";
-			}else {
-				session.setAttribute("user", user);
-	            return "redirect:/botton";
-			}
-     
+                session.setAttribute("user", user);
+                return "redirect:/reset";// 戻されたendtimeが現在時刻よりも小さい場合、パスワードリセットページにリダイレクト
+            } else {
+                session.setAttribute("user", user);
+                return "redirect:/botton";// そうでなければ検索ページに入る
+            }
+
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            System.out.println(e.getMessage());
-            return "login"; 
+            return "login"; // エラーが発生した場合はエラーメッセージを収集し、loginページに戻る
         }
     }
-	
-	//reset password
-	@PostMapping("reset-password")
-    public String resetPassword(Changepws changepws,Model model,HttpSession session) {
-		
-		System.out.println(changepws.getNewPassword()+changepws.getConfirmPassword());
-		try {
-			loginService.update(changepws);
-		} catch (RuntimeException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "reset";// TODO: handle exception
-		}
-		
-        
-        return "redirect:/login";
+
+    // パスワードリセット
+    @PostMapping("reset-password")
+    public String resetPassword(Changepws changepws, Model model, HttpSession session) {
+
+        try {
+            loginService.update(changepws);// フロントエンドからのデータを更新パスワードに渡す
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "reset";// エラーが発生した場合はエラーメッセージを収集し、resetページに戻る
+        }
+
+
+        return "redirect:/login";// エラーが発生しない場合はloginページに進む
     }
 }
-	
-	
-
-	
-	

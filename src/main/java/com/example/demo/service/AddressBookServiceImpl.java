@@ -25,8 +25,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 	//search機能
 	@Override
     public List<AddressBook> searchAddressBooks(SearchRequest searchRequest){
-    	List<AddressBook> list = addressBookMapper.searchAddressBooks(searchRequest);
-    	System.out.println(list);
+    	List<AddressBook> list = addressBookMapper.searchAddressBooks(searchRequest);//アカウントとパスワードをmapper層に渡し、listを返す
     	return list;
     };
 }

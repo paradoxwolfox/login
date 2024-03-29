@@ -7,39 +7,46 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h2><span th:if="${session.user != null}" th:text="${session.user.username}"></span>Reset Password</h2>
+    <!-- ユーザー名とリセットパスワードのヘッダー -->
+    <h2><span th:if="${session.user != null}" th:text="${session.user.username}"></span>のパスワードをリセットする</h2>
+    <!-- エラーメッセージの表示 -->
     <div th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></div>
+    <!-- リセットフォーム -->
     <form id="reset-password-form" th:action="@{/reset-password}" method="post">
         <table border="0" class="form_table">
+            <!-- ユーザー名入力フィールド -->
             <tr th:if="${session.user == null}">
-                <td valign="middle" align="right">Username:</td>
+                <td valign="middle" align="right">ユーザー名:</td>
                 <td valign="middle" align="left">
                     <input type="text" class="inputgri" id="username" name="username">
                 </td>
             </tr>
+            <!-- ユーザー名がセッションにある場合 -->
             <tr th:if="${session.user != null}">
-                <td valign="middle" align="right">Username:</td>
+                <td valign="middle" align="right">ユーザー名:</td>
                 <td valign="middle" align="left">
                     <input type="text" class="inputgri" id="username" name="username" th:value="${session.user.username}" readonly>
                 </td>
             </tr>
+            <!-- 新しいパスワード入力フィールド -->
             <tr>
-                <td valign="middle" align="right">New Password:</td>
+                <td valign="middle" align="right">新しいパスワード:</td>
                 <td valign="middle" align="left">
                     <input type="password" class="inputgri" id="new-password" name="newPassword">
                 </td>
             </tr>
+            <!-- パスワード確認入力フィールド -->
             <tr>
-                <td valign="middle" align="right">Confirm Password:</td>
+                <td valign="middle" align="right">パスワード確認:</td>
                 <td valign="middle" align="left">
                     <input type="password" class="inputgri" id="confirm-password" name="confirmPassword">
                 </td>
             </tr>
         </table>
+        <!-- リセットボタン -->
         <p>
-            <button type="submit" id="reset-btn">Reset Password</button>
+            <button type="submit" id="reset-btn">パスワードをリセット</button>
         </p>
     </form>
 </body>
-
 </html>

@@ -9,6 +9,7 @@
 <body>
     <h2>検索プログラム</h2>
     <form id="searchForm" th:action="@{search}" method="post">
+        <!-- 所有者グループのラベルと選択肢 -->
         <label for="ownerGroup">所有者グループ:</label>
         <select id="ownerGroup" name="ownerGroup">
             <option value=""></option>
@@ -17,16 +18,20 @@
             <option value="Group3">Group3</option>
         </select>
 
+        <!-- アドレス帳名のラベルと入力フィールド -->
         <label for="addressBookName">アドレス帳名:</label>
         <input type="text" id="addressBookName" name="addressBookName">
 
+        <!-- 登録者のラベルと入力フィールド -->
         <label for="reporter">登録者:</label>
         <input type="text" id="reporter" name="reporter">
         <button type="button" id="selectUser">ユーザー選択</button>
         <button type="button" id="clearReporter">クリア</button>
 
+        <!-- 更新者のチェックボックス -->
         <label><input type="checkbox" id="checkBox"> 更新者</label>
 
+        <!-- 検索ボタンとクリアボタン -->
         <button type="submit" id="search">検索</button>
         <button type="button" id="clear" onclick="clearFields()">クリア</button>
     </form>
@@ -35,7 +40,7 @@
     <div id="searchResults">
         <table id="searchResultsTable" border="1">
         <thead>
-            <!-- 表のヘッダー -->
+            <!-- テーブルのヘッダー -->
             <tr>
                 <th>一覧</th>
                 <th>編集</th>
@@ -48,7 +53,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- 表のデータ -->
+            <!-- テーブルのデータ -->
             <tr th:each="item,state:${list}">
                 <th><span th:text="${item.id}"></span></th>
                 <th><button>編集</button></th>
@@ -63,7 +68,9 @@
         </table>
     </div>
     
+    <!-- jQueryのCDNを読み込む -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- フォームをクリアするJavaScript関数 -->
     <script>
     function clearFields(){
         // 全てのフォームフィールドをクリアする

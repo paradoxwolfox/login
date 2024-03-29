@@ -33,21 +33,12 @@ public class AddressBookController{
 	
 	@Autowired
 	private AddressBookService addressBookService;
-    
-
-//    @PostMapping("/search")
-//    public List<AddressBook> searchAddressBooks(@RequestBody SearchRequest searchRequest) {
-//    	List<AddressBook> list = addressBookService.searchAddressBooks(searchRequest);
-//        return list;
-//    }
-	
+    	
 	//search機能
 	@PostMapping("/search")
 	public String searchAddressBooks(SearchRequest searchRequest,Model model){
-		System.out.println(searchRequest);
-	    List<AddressBook> list = addressBookService.searchAddressBooks(searchRequest);
-	    System.out.println(list);
-	    model.addAttribute("list",list);
+	    List<AddressBook> list = addressBookService.searchAddressBooks(searchRequest);//値をサービス層に渡し、listを返す
+	    model.addAttribute("list",list);//listをフロントエンドのモデルに渡す
 	    return "botton";
 	}
 	
