@@ -15,5 +15,4 @@
     	set "password" = #{newPassword, jdbcType=VARCHAR}
     	where "username" = #{username, jdbcType=VARCHAR}
 	</update>
-
 </mapper>

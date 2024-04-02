@@ -28,5 +28,11 @@ public class AddressBookServiceImpl implements AddressBookService {
     	List<AddressBook> list = addressBookMapper.searchAddressBooks(searchRequest);//アカウントとパスワードをmapper層に渡し、listを返す
     	return list;
     };
+    
+    @Override
+	public void delete(Integer id) {
+		
+    	addressBookMapper.delete(id);
+	}
 }
 

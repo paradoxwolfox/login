@@ -16,4 +16,6 @@ import com.example.demo.vo.AddressBook;
 @Mapper
 public interface AddressBookMapper {
     List<AddressBook> searchAddressBooks(SearchRequest searchRequest);
+    
+    void delete(Integer id);
 }

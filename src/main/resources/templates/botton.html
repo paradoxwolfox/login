@@ -62,7 +62,7 @@
                 <th><span th:text="${item.addressBookName}"></span></th>
                 <th><span th:text="${item.ownerGroup}"></span></th>
                 <th><span th:text="${item.createDate}"></span></th>
-                <th><button>削除</button></th>
+                <th><button th:onclick="'deleteitem('+${item.id}+')'">削除</button></th>
             </tr>
          </tbody>
         </table>
@@ -81,6 +81,12 @@
 
         // 検索結果テーブルの内容をクリアする
         $('#searchResultsTable tbody').empty();
+    }
+    
+    function deleteitem(id){
+    	if(window.confirm('削除してもよろしいですか?')){
+    		location.href='[[@{/delete?id=}]]'+id;
+    	}
     }
     </script>
 </body>

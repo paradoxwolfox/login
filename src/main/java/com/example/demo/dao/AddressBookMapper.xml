@@ -12,4 +12,8 @@ SELECT a."id" as id,
        AND (a."addressBookName" = #{addressBookName, jdbcType=VARCHAR} OR #{addressBookName, jdbcType=VARCHAR} = '' OR #{addressBookName, jdbcType=VARCHAR} IS NULL)
        AND (a."reporter" = #{reporter, jdbcType=VARCHAR} OR #{reporter, jdbcType=VARCHAR} = '' OR #{reporter, jdbcType=VARCHAR} IS NULL)
     </select>
+    
+    <delete id="delete"  parameterType="Integer">
+		delete from MY."Test" a where a."id" = #{id}
+	</delete>
 </mapper>

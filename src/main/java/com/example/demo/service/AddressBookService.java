@@ -18,4 +18,6 @@ import java.util.List;
 @Service
 public interface AddressBookService {
  List<AddressBook> searchAddressBooks(SearchRequest searchRequest);
+ 
+	void delete(Integer id);
 }

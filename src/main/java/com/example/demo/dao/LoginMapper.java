@@ -18,4 +18,6 @@ public interface LoginMapper {
 	User login(String name);
 
 	void update(Changepws changepws);
+
+	
 }

@@ -70,4 +70,6 @@ public class UserController {
 
         return "redirect:/login";// エラーが発生しない場合はloginページに進む
     }
+    
+    
 }

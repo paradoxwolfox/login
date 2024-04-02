@@ -42,7 +42,11 @@ public class AddressBookController{
 	    return "botton";
 	}
 	
-	
+	@RequestMapping("delete")
+    public String delete(Integer id) {
+		addressBookService.delete(id);
+    	return "botton";
+    }
 
 }
 
