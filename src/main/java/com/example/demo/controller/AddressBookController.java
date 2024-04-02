@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.bean.SearchRequest;
-
+import com.example.demo.service.AddressBookService;
+import com.example.demo.vo.AddressBook;
 import com.example.demo.vo.result;
 
 
@@ -24,7 +25,7 @@ import com.example.demo.vo.result;
 *
 *2024.03.28
 */
-@Controller
+@RestController
 @CrossOrigin
 public class AddressBookController{
 //	@RequestMapping("/botton")
@@ -32,12 +33,17 @@ public class AddressBookController{
 //    {
 //        return "botton";
 //    }
+	@Autowired
+	private AddressBookService addressBookService;
+	
 	
 	@RequestMapping("/search")
 	@ResponseBody
-	public String searchAddressBooks(@RequestBody SearchRequest searchRequest){
+	public result searchAddressBooks(@RequestBody SearchRequest searchRequest){
 	    System.out.println(searchRequest);
-	    return "botton";
+	    List<AddressBook> list=addressBookService.searchAddressBooks(searchRequest);
+	    System.out.println(list);
+	    return result.ok(list);	    
 	}
 }
 
