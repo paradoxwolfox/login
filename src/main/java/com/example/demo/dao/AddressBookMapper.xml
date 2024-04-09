@@ -11,9 +11,37 @@ SELECT a."id" as id,
        WHERE (a."ownerGroup" = #{ownerGroup, jdbcType=VARCHAR} OR #{ownerGroup, jdbcType=VARCHAR} = '' OR #{ownerGroup, jdbcType=VARCHAR} IS NULL)
        AND (a."addressBookName" = #{addressBookName, jdbcType=VARCHAR} OR #{addressBookName, jdbcType=VARCHAR} = '' OR #{addressBookName, jdbcType=VARCHAR} IS NULL)
        AND (a."reporter" = #{reporter, jdbcType=VARCHAR} OR #{reporter, jdbcType=VARCHAR} = '' OR #{reporter, jdbcType=VARCHAR} IS NULL)
+       ORDER BY a."id" 
     </select>
     
     <delete id="delete"  parameterType="Integer">
 		delete from MY."Test" a where a."id" = #{id}
 	</delete>
+	
+	<select id="show" resultType="com.example.demo.vo.showinfo">
+	SELECT a."id" as id,
+	   a."addressBookName" as addressBookName,
+       a."project" as project,
+       a."ownerGroup" as ownerGroup,
+       a."createDate" as createDate,
+       a."reporter" as reporter
+       FROM MY."Test" a 
+       WHERE a."id" = #{id}
+    </select>
+    
+    <update id="change" parameterType="com.example.demo.vo.showinfo">
+    	update MY."Test" a 
+    	set
+    	a."project" = #{project},
+    	a."ownerGroup" = #{ownerGroup},
+    	a."reporter" = #{reporter},
+    	a."createDate" = #{createDate}
+	WHERE 
+    	a."addressBookName" = #{addressBookName}
+    </update>
+    
+    <insert id="add" parameterType="com.example.demo.vo.showinfo">
+    	INSERT INTO MY."Test" ("addressBookName","project","ownerGroup","reporter","createDate") 
+		VALUES (#{addressBookName, jdbcType=VARCHAR}, #{project, jdbcType=VARCHAR}, #{ownerGroup, jdbcType=VARCHAR}, #{reporter, jdbcType=VARCHAR}, #{createDate})   	
+    </insert>
 </mapper>

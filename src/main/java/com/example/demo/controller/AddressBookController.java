@@ -17,6 +17,7 @@ import com.example.demo.bean.SearchRequest;
 import com.example.demo.service.AddressBookService;
 import com.example.demo.vo.AddressBook;
 import com.example.demo.vo.result;
+import com.example.demo.vo.showinfo;
 
 
 
@@ -48,6 +49,25 @@ public class AddressBookController{
     	return "botton";
     }
 
+	@RequestMapping("/change")
+    public String showlist(Integer id,Model model) {
+		List<showinfo> list = addressBookService.show(id);
+		model.addAttribute("list",list);
+    	return "change";
+    }
+	
+	@RequestMapping("/changeinfo")
+    public String change(showinfo showinfo,Model model) {
+		addressBookService.change(showinfo);
+    	return "redirect:/botton";
+    }
+	
+	@RequestMapping("/save")
+    public String add(showinfo showinfo,Model model) {
+		addressBookService.add(showinfo);
+    	return "redirect:/botton";
+    }
+	
 }
 
 

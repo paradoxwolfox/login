@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.bean.SearchRequest;
 import com.example.demo.vo.AddressBook;
+import com.example.demo.vo.showinfo;
 
 
 /**
@@ -18,4 +19,10 @@ public interface AddressBookMapper {
     List<AddressBook> searchAddressBooks(SearchRequest searchRequest);
     
     void delete(Integer id);
+
+	List<showinfo> show(Integer id);
+
+	void change(showinfo showinfo);
+
+	void add(showinfo showinfo);
 }

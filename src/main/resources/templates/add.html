@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>増加プログラム</title>
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h2>更新プログラム</h2>
+    <form id="addform" th:action="@{/save}" method="post">
+        <table border="0" class="form_table">
+            <!-- ユーザー名入力フィールド -->
+            
+            <tr >
+                <td valign="middle" align="right">アドレス帳名:</td>
+                <td valign="middle" align="left">
+                    <input type="text" class="inputgri" id="addressBookName" name="addressBookName" >
+                </td>
+            </tr>
+            <tr >
+            <td valign="middle" align="right">所有者グループ:</td>
+            	<td>
+                <select id="ownerGroup" name="ownerGroup">
+                	<option value=""></option>
+            		<option value="Group1">Group1</option>
+            		<option value="Group2">Group2</option>
+            		<option value="Group3">Group3</option>
+        		</select>
+        		</td>
+            </tr>
+            <!-- 新しいパスワード入力フィールド -->
+            <tr>
+                <td valign="middle" align="right">登録者:</td>
+                <td valign="middle" align="left">
+                    <input type="text" class="inputgri" id="reporter" name="reporter">
+                </td>
+            </tr>
+            <!-- パスワード確認入力フィールド -->
+            <tr>
+                <td valign="middle" align="right">項目:</td>
+                <td valign="middle" align="left">
+                    <input type="text" class="inputgri" id="project" name="project">
+                </td>
+            </tr>
+        </table>
+        <!-- リセットボタン -->
+        <p>
+            <button type="submit" id="add-btn">増加</button>
+        </p>
+    </form>
+</body>
+</html>
