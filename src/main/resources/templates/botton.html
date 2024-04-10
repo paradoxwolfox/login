@@ -8,7 +8,7 @@
 </head>
 <body>
     <h2>検索プログラム</h2>
-    <form id="searchForm" th:action="@{search}" method="post">
+    <form id="searchForm"  method="post">
         <!-- 所有者グループのラベルと選択肢 -->
         <label for="ownerGroup">所有者グループ:</label>
         <select id="ownerGroup" name="ownerGroup">
@@ -24,7 +24,7 @@
 
         <!-- 登録者のラベルと入力フィールド -->
         <label for="reporter">登録者:</label>
-        <input type="text" id="reporter" name="reporter">
+        <input type="text" id="reporter" name="reporter" readonly>
         <button type="button" id="selectUser">ユーザー選択</button>
         <button type="button" id="clearReporter">クリア</button>
 
@@ -32,14 +32,27 @@
         <label><input type="checkbox" id="checkBox"> 更新者</label>
 
         <!-- 検索ボタンとクリアボタン -->
-        <button type="submit" id="search">検索</button>
+        <button type="button" id="search">検索</button>
         <button type="button" id="clear" onclick="clearFields()">クリア</button>
         <button type="button" id="add" onclick="addinfo()">増加</button>
     </form>
+    
+  <div id="reportersDialog">
+    <div id="reportersDialogContent">
+        <h3>选择报告者</h3>
+        <div id="reportersForm" th:fragment="getReporters">
+            <div th:each="item,state:${list1}">
+                <input type="radio" class="reporterRadio" name="reporterRadioGroup" value="" > <!-- 使用单选按钮 -->
+                <label th:text="${item.reporter}">选择此报告者</label> <!-- 单选按钮标签 -->
+            </div>
+        </div>
+        <button type="button" id="confirmSelectionBtn">确定</button>
+    </div>
+</div>
 
     <!-- 検索結果を表示するコンテナ -->
     <div id="searchResults">
-        <table id="searchResultsTable" border="1">
+        <table id="searchResultsTable" border="1" th:fragment="dataList">
         <thead>
             <!-- テーブルのヘッダー -->
             <tr>
@@ -75,6 +88,57 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- フォームをクリアするJavaScript関数 -->
     <script>
+    $("#search").click(() => {
+        const url = `http://localhost:8080/search`;
+        const data = {
+        	    ownerGroup: $('#ownerGroup').val(),
+        	    addressBookName: $('#addressBookName').val(),
+        	    reporter: $('#reporter').val()
+        	};
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType : 'application/json;charset=utf-8',
+            success: function (data, status, xhr) {
+                console.log("====后台返回的数据开始====");
+                console.log(data);
+                console.log("====后台返回的数据结束====");
+
+                $("#searchResultsTable").html(data);
+           
+            }
+        });
+    }); 
+    
+    $("#selectUser").click(()=>{
+    	$("#reportersDialog").show();
+    	const url = `http://localhost:8080/getReporters`;
+    	$.ajax({
+            url: url,
+            type: 'POST',
+            contentType : 'application/json;charset=utf-8',
+            success: function (data, status, xhr) {
+                console.log("====后台返回的数据开始====");
+                console.log(data);
+                console.log("====后台返回的数据结束====");
+                $("#reportersForm").html(data);
+            }
+        });
+    });
+    $("#confirmSelectionBtn").click(function(){
+        // 获取所选择的报告者的值
+        var selectedReporter = $("input[name='reporterRadioGroup']:checked").next('label').text();
+        // 将所选择的报告者的值显示在输入框中
+        $("#reporter").val(selectedReporter);
+        // 关闭对话框
+        $("#reportersDialog").hide();
+    });
+    
+    $("#clearReporter").click(function(){
+    	$('#reporter').val('');
+    });
     function clearFields(){
         // 全てのフォームフィールドをクリアする
         $('#ownerGroup').prop('selectedIndex', 0);

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.vo.AddressBook;
 import com.example.demo.vo.showinfo;
 import com.example.demo.bean.SearchRequest;
-
+import com.example.demo.bean.reporter;
 
 import java.util.List;
 
@@ -27,4 +27,6 @@ public interface AddressBookService {
 	void change(showinfo showinfo);
 
 	void add(showinfo showinfo);
+
+	List<reporter> getReporters();
 }

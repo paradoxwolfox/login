@@ -44,4 +44,9 @@ SELECT a."id" as id,
     	INSERT INTO MY."Test" ("addressBookName","project","ownerGroup","reporter","createDate") 
 		VALUES (#{addressBookName, jdbcType=VARCHAR}, #{project, jdbcType=VARCHAR}, #{ownerGroup, jdbcType=VARCHAR}, #{reporter, jdbcType=VARCHAR}, #{createDate})   	
     </insert>
+    
+    	<select id="getReporters" resultType="com.example.demo.bean.reporter">
+SELECT DISTINCT a."reporter" 
+       FROM MY."Test" a        
+    </select>
 </mapper>

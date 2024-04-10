@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.bean.SearchRequest;
+import com.example.demo.bean.reporter;
 import com.example.demo.dao.AddressBookMapper;
 import com.example.demo.vo.AddressBook;
 import com.example.demo.vo.showinfo;
@@ -61,6 +62,12 @@ public class AddressBookServiceImpl implements AddressBookService {
 		System.out.println(showinfo);
 		addressBookMapper.add(showinfo);
 		
+	}
+
+	@Override
+	public List<reporter> getReporters() {
+		List<reporter> list = addressBookMapper.getReporters();
+		return list;
 	}
 }
 
