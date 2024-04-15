@@ -59,7 +59,6 @@ public class AddressBookServiceImpl implements AddressBookService {
 	public void add(showinfo showinfo) {
 		Date currentDate = new Date();
 		showinfo.setCreateDate(currentDate);
-		System.out.println(showinfo);
 		addressBookMapper.add(showinfo);
 		
 	}
