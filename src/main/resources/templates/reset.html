@@ -8,7 +8,8 @@
 </head>
 <body>
     <!-- ユーザー名とリセットパスワードのヘッダー -->
-    <h2><span th:if="${session.user != null}" th:text="${session.user.username}"></span>パスワードをリセットする</h2>
+    <h2 th:if="${session.user != null}"><span th:text="${session.user.username}"></span>のパスワードは時間切れだ、リセットしてください。</h2>
+    <h2 th:if="${session.user == null}"><span>パスワードをリセットする</span></h2>
     <!-- エラーメッセージの表示 -->
     <div th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></div>
     <!-- リセットフォーム -->
