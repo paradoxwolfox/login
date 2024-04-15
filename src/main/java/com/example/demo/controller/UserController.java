@@ -62,6 +62,7 @@ public class UserController {
 
         try {
             loginService.update(changepws);// フロントエンドからのデータを更新パスワードに渡す
+            session.invalidate();
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "reset";// エラーが発生した場合はエラーメッセージを収集し、resetページに戻る
