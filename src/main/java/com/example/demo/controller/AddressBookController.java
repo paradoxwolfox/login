@@ -46,6 +46,7 @@ public class AddressBookController{
 	    model.addAttribute("list",list);//listをフロントエンドのモデルに渡す
 	    return "botton::dataList";
 	}
+	//レポーターを表示する
 	@RequestMapping("/getReporters")
 	public String getReporters(Model model){
 	    List<reporter> list=addressBookService.getReporters();
@@ -53,12 +54,13 @@ public class AddressBookController{
 	    model.addAttribute("list1",list);
 	    return "botton::getReporters";	    
 	}
+	//削除機能
 	@RequestMapping("delete")
     public String delete(Integer id) {
 		addressBookService.delete(id);
     	return "botton";
     }
-
+	//変更ページにジャンプ
 	@RequestMapping("/change")
     public String showlist(Integer id,Model model) {
 		List<showinfo> list = addressBookService.show(id);
@@ -66,12 +68,13 @@ public class AddressBookController{
     	return "change";
     }
 	
+	//更新機能
 	@RequestMapping("/changeinfo")
     public String change(showinfo showinfo,Model model) {
 		addressBookService.change(showinfo);
     	return "redirect:/botton";
     }
-	
+	//増加機能
 	@RequestMapping("/save")
     public String add(showinfo showinfo,Model model) {
 		addressBookService.add(showinfo);

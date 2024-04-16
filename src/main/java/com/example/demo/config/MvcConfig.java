@@ -21,8 +21,8 @@ public class MvcConfig implements WebMvcConfigurer{
 		registry.addViewController("login").setViewName("login");//loginのリダイレクト
 		registry.addViewController("reset").setViewName("reset");//resetのリダイレクト
 		registry.addViewController("botton").setViewName("botton");//bottonのリダイレクト
-		registry.addViewController("change").setViewName("change");
-		registry.addViewController("add").setViewName("add");
+		registry.addViewController("change").setViewName("change");//changeのリダイレクト
+		registry.addViewController("add").setViewName("add");//addのリダイレクト
 	}
 	
 }
