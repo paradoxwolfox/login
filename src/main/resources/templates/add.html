@@ -8,6 +8,7 @@
 </head>
 <body>
     <h2>更新プログラム</h2>
+    <div th:text="${error}" style="color: red;"></div>
     <form id="addform" th:action="@{/save}" method="post">
         <table border="0" class="form_table">
             <!-- ユーザー名入力フィールド -->

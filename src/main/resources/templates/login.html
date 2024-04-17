@@ -9,9 +9,10 @@
 <body>
     <h2>Login</h2>
     <!-- エラーメッセージを表示するディビジョン -->
-    <div th:text="${errorMessage}" style="color: red;"></div>
+    
     <form id="login-form" th:action="@{search1}" method="post">
-        <table border="0" class="form_table">
+    <div th:text="${errorMessage}" style="color: red;"></div>
+        <table  class="form_table">
             <tr>
                 <!-- ユーザー名の入力 -->
                 <td valign="middle" align="right">ユーザー名:</td>

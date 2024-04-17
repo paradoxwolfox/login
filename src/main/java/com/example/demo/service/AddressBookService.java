@@ -29,4 +29,6 @@ public interface AddressBookService {
 	void add(showinfo showinfo);
 
 	List<reporter> getReporters();
+
+	List<AddressBook> searchAll();
 }

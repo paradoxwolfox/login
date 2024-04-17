@@ -19,6 +19,8 @@ import com.example.demo.vo.showinfo;
 public interface AddressBookMapper {
     List<AddressBook> searchAddressBooks(SearchRequest searchRequest);
     
+    List<AddressBook> searchAll();
+    
     void delete(Integer id);
 
 	List<showinfo> show(Integer id);
@@ -28,4 +30,6 @@ public interface AddressBookMapper {
 	void add(showinfo showinfo);
 
 	List<reporter> getReporters();
+
+	
 }

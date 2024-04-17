@@ -8,6 +8,7 @@
 </head>
 <body>
     <h2>検索プログラム</h2>
+    <div th:text="${error}" style="color: red;"></div>
     <form id="searchForm"  method="post">
         <!-- 所有者グループのラベルと選択肢 -->
         <label for="ownerGroup">所有者グループ:</label>
@@ -39,14 +40,14 @@
     
   <div id="reportersDialog">
     <div id="reportersDialogContent">
-        <h3>选择报告者</h3>
+        <h3>報告者を選択</h3>
         <div id="reportersForm" th:fragment="getReporters">
             <div th:each="item,state:${list1}">
-                <input type="radio" class="reporterRadio" name="reporterRadioGroup" value="" > <!-- 使用单选按钮 -->
-                <label th:text="${item.reporter}">选择此报告者</label> <!-- 单选按钮标签 -->
+                <input type="radio" class="reporterRadio" name="reporterRadioGroup" value="" > <!-- ラジオボタンを使用 -->
+                <label th:text="${item.reporter}">この報告者を選択</label> <!-- ラジオボタンのラベル -->
             </div>
         </div>
-        <button type="button" id="confirmSelectionBtn">确定</button>
+        <button type="button" id="confirmSelectionBtn">確定</button>
     </div>
 </div>
 
@@ -56,10 +57,9 @@
         <thead>
             <!-- テーブルのヘッダー -->
             <tr>
-                <th>一覧</th>
+                <th>リスト</th>
                 <th>編集</th>
                 <th>表示項目</th>
-                <th>エクスポート</th>
                 <th>アドレス帳名</th>
                 <th>所有者グループ名</th>
                 <th>更新日時</th>
@@ -73,7 +73,6 @@
                 <th><span th:text="${item.id}"></span></th>
                 <th><button>編集</button></th>
                 <th><span th:text="${item.project}"></span></th>
-                <th><button>エクスポート</button></th>
                 <th><span th:text="${item.addressBookName}"></span></th>
                 <th><span th:text="${item.ownerGroup}"></span></th>
                 <th><span th:text="${item.createDate}"></span></th>
@@ -88,6 +87,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- フォームをクリアするJavaScript関数 -->
     <script>
+    $(document).ready(function() {
+        // ページの読み込みが完了したら、AJAXリクエストを送信する
+        $.ajax({
+            url: 'http://localhost:8080/init', // バックエンドからデータを初期化するURL
+            type: 'POST', // データを取得するためにGETメソッドを使用
+            success: function(data) {
+            	$("#searchResultsTable").html(data);
+            },
+            error: function(xhr, status, error) {
+                // リクエストが失敗した場合の処理
+                console.error('Error initializing data:', error);
+            }
+        });
+    });
+
     $("#search").click(() => {
         const url = `http://localhost:8080/search`;
         const data = {
@@ -102,9 +116,9 @@
             data: JSON.stringify(data),
             contentType : 'application/json;charset=utf-8',
             success: function (data, status, xhr) {
-                console.log("====后台返回的数据开始====");
+                console.log("====バックエンドからのデータ開始====");
                 console.log(data);
-                console.log("====后台返回的数据结束====");
+                console.log("====バックエンドからのデータ終了====");
 
                 $("#searchResultsTable").html(data);
            
@@ -120,19 +134,19 @@
             type: 'POST',
             contentType : 'application/json;charset=utf-8',
             success: function (data, status, xhr) {
-                console.log("====后台返回的数据开始====");
+                console.log("====バックエンドからのデータ開始====");
                 console.log(data);
-                console.log("====后台返回的数据结束====");
+                console.log("====バックエンドからのデータ終了====");
                 $("#reportersForm").html(data);
             }
         });
     });
     $("#confirmSelectionBtn").click(function(){
-        // 获取所选择的报告者的值
+        // 選択した報告者の値を取得する
         var selectedReporter = $("input[name='reporterRadioGroup']:checked").next('label').text();
-        // 将所选择的报告者的值显示在输入框中
+        // 選択した報告者の値を入力フィールドに表示する
         $("#reporter").val(selectedReporter);
-        // 关闭对话框
+        // ダイアログを閉じる
         $("#reportersDialog").hide();
     });
     
@@ -141,10 +155,7 @@
     });
     function clearFields(){
         // 全てのフォームフィールドをクリアする
-        $('#ownerGroup').prop('selectedIndex', 0);
-        $('#addressBookName').val('');
-        $('#reporter').val('');
-        $('#checkBox').prop('checked', false);
+
 
         // 検索結果テーブルの内容をクリアする
         $('#searchResultsTable tbody').empty();

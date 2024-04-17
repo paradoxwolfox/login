@@ -1,25 +1,17 @@
 package com.example.demo.controller;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
 
+import java.time.LocalDate;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.example.demo.bean.Changepws;
-import com.example.demo.bean.UserImfor;
 import com.example.demo.service.LoginService;
 import com.example.demo.vo.User;
-import com.example.demo.vo.result;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,18 +27,31 @@ public class UserController {
     @Autowired
     private LoginService loginService;
 
-    // 検索機能
+    /**
+     * user検査
+     * @param username　ユーザー
+     * @param　password パスワード
+     */
     @RequestMapping("search1")
     public String login(String username, String password, HttpSession session, Model model) {
         try {
+        	LocalDate currentDate = LocalDate.now();// 現在のシステム時刻を取得
+            User user = loginService.searchUsers(username, password);// アカウントとパスワードをサービス層に渡し、userを返す           
+            session.setAttribute("user", user);
+            
+            if (username == null || password == null || username == "" || password == "") {
+                throw new RuntimeException("ユーザー名とパスワードを入力してください");
+            }
+            if (user == null) {
+                throw new RuntimeException("ユーザー名が間違っています");//ユーザー名がない場合"ユーザー名が間違っています"を返信
+            }
 
-            User user = loginService.searchUsers(username, password);// アカウントとパスワードをサービス層に渡し、userを返す
-            LocalDate currentDate = LocalDate.now();// 現在のシステム時刻を取得
-            if (user.getEndtime().toLocalDate().compareTo(currentDate) < 0) {
-                session.setAttribute("user", user);
+            if (!user.getPassword().equals(DigestUtils.md5Hex(password))) {
+                throw new RuntimeException("パスワードが間違っています");//パスワードが間違ってる場合"パスワードが間違っています"を返信
+            }
+            if (user.getEndtime().toLocalDate().compareTo(currentDate) < 0) {                
                 return "redirect:/reset";// 戻されたendtimeが現在時刻よりも小さい場合、パスワードリセットページにリダイレクト
-            } else {
-                session.setAttribute("user", user);
+            } else {               
                 return "redirect:/botton";// そうでなければ検索ページに入る
             }
 
@@ -56,21 +61,7 @@ public class UserController {
         }
     }
 
-    // パスワードリセット
-    @PostMapping("reset-password")
-    public String resetPassword(Changepws changepws, Model model, HttpSession session) {
-
-        try {
-            loginService.update(changepws);// フロントエンドからのデータを更新パスワードに渡す
-            session.invalidate();
-        } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "reset";// エラーが発生した場合はエラーメッセージを収集し、resetページに戻る
-        }
-
-
-        return "redirect:/login";// エラーが発生しない場合はloginページに進む
-    }
+    
     
     
 }
